@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: My Ticket Purchase API
+  version: 1.0.0
+  description: API для сервиса покупки билетов
+
+paths:
+  /auth:
+    $ref: './services/auth.yaml#/paths'
+  /booking:
+    $ref: './services/booking.yaml#/paths'
+  /payment: 
+    $ref: './services/schedule.yaml#/paths'
+  /schedule: 
+    $ref: './services/schedule.yaml#/paths'
+  /search: 
+    $ref: './services/search.yaml#/paths'
+  /notify: 
+    $ref: './services/notify.yaml#/paths'
+components:
+  schemas:
+    $ref: './schemas.yaml'
