@@ -1,0 +1,160 @@
+
+paths:
+  /ticket:
+    post:
+      summary: Создание билета
+      tags:
+        - Booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas.yaml#/components/schemas/AddTicket'
+      responses:
+        '201':
+          description: Билет создан
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '401':
+          description: Неавторизован
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+
+  /tickets:
+    get:
+      summary: Получение всех билетов
+      tags:
+        - Booking
+      responses:
+        '200':
+          description: Список билетов
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '../schemas.yaml#/components/schemas/Ticket'
+        '401':
+          description: Неавторизован
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+
+  /ticket/{id}:
+    get:
+      summary: Получение билета по ID
+      tags:
+        - Booking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Найден билет
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Ticket'
+        '400':
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '404':
+          description: Билет не найден
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '401':
+          description: Неавторизован
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+
+    put:
+      summary: Обновление билета по ID
+      tags:
+        - Booking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas.yaml#/components/schemas/PutTicketRequest'
+      responses:
+        '200':
+          description: Обновление прошло успешно
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '401':
+          description: Неавторизован
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+
+    delete:
+      summary: Удаление билета по ID
+      tags:
+        - Booking
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Успешно удалено
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        '400':
+          description: Ошибка запроса
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '401':
+          description: Неавторизован
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+`
