@@ -1,0 +1,129 @@
+paths:
+  /login:
+    post:
+      summary: Авторизация пользователя
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - login
+                - password
+              properties:
+                login:
+                  type: string
+                  example: "admin"
+                password:
+                  type: string
+                  example: "secret"
+      responses:
+        '200':
+          description: Успешная авторизация
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIs..."
+        '401':
+          description: Неверные учетные данные
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid login or password"
+
+  /user:
+    post:
+      summary: Создание пользователя
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - login
+                - password
+                - two_factor_enabled
+                - role
+              properties:
+                login:
+                  type: string
+                password:
+                  type: string
+                two_factor_enabled:
+                  type: boolean
+                role:
+                  type: string
+                  enum: [user, manager]
+      responses:
+        '201':
+          description: Пользователь создан
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "OK"
+        '400':
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Missing required field"
+
+  /user/{id}:
+    get:
+      summary: Получение информации о пользователе по ID
+      tags:
+        - Auth
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Успешно найден
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  login:
+                    type: string
+                  password:
+                    type: string
+                  two_factor_enabled:
+                    type: boolean
+                  role:
+                    type: string
+                    enum: [user, manager]
+        '400':
+          description: Неверный ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Invalid user ID"
