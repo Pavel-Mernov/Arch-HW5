@@ -10,7 +10,7 @@ paths:
   /booking:
     $ref: './services/booking.yaml#/paths'
   /payment: 
-    $ref: './services/schedule.yaml#/paths'
+    $ref: './services/payment.yaml#/paths'
   /schedule: 
     $ref: './services/schedule.yaml#/paths'
   /search: 
