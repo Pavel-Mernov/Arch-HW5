@@ -1,0 +1,76 @@
+paths:
+  /refund:
+    post:
+      summary: Уведомление о возврате билета
+      tags:
+        - Notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas.yaml#/components/schemas/TicketNotificationRequest'
+      responses:
+        '200':
+          description: Уведомление успешно отправлено
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: refund notification successful
+        '400':
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '401':
+          description: Неавторизован
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+
+  /buy:
+    post:
+      summary: Уведомление о покупке билета
+      tags:
+        - Notification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas.yaml#/components/schemas/TicketNotificationRequest'
+      responses:
+        '200':
+          description: Уведомление успешно отправлено
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: notification successful
+        '400':
+          description: Неверный запрос
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '401':
+          description: Неавторизован
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '../schemas.yaml#/components/schemas/Error'
