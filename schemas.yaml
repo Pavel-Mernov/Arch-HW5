@@ -1,0 +1,463 @@
+components:
+  schemas:
+
+    # Общая схема ошибки
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+
+    # Схемы /auth
+    AuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+
+    LoginRequest:
+      type: object
+      required:
+        - login
+        - password
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+
+    CreateUserRequest:
+      type: object
+      required:
+        - login
+        - password
+        - two_factor_enabled
+        - role
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+        two_factor_enabled:
+          type: boolean
+        role:
+          type: string
+          enum: [user, manager]
+
+    User:
+      type: object
+      required:
+        - id
+        - login
+        - password
+        - two_factor_enabled
+        - role
+      properties:
+        id:
+          type: number
+        login:
+          type: string
+        password:
+          type: string
+        two_factor_enabled:
+          type: boolean
+        role:
+          type: string
+          enum: [user, manager]
+
+    # Схемы booking.yaml
+    Ticket:
+      type: object
+      required:
+        - id
+        - flight_id
+        - user_id
+        - from_station
+        - to_station
+        - seat_number
+        - booking_time
+        - status
+      properties:
+        id:
+          type: number
+        flight_id:
+          type: number
+        user_id:
+          type: number
+        from_station:
+          type: number
+        to_station:
+          type: number
+        seat_number:
+          type: string
+        booking_time:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [reserved, paid, cancelled]
+
+    AddTicket:
+      type: object
+      required:
+        - flight_id
+        - user_id
+        - from_station
+        - to_station
+        - seat_number
+        - booking_time
+        - status
+      properties:
+        flight_id:
+          type: number
+        user_id:
+          type: number
+        from_station:
+          type: number
+        to_station:
+          type: number
+        seat_number:
+          type: string
+        booking_time:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [reserved, paid, cancelled]
+
+    PutTicketRequest:
+      type: object
+      properties:
+        flight_id:
+          type: number
+        user_id:
+          type: number
+        from_station:
+          type: number
+        to_station:
+          type: number
+        seat_number:
+          type: string
+        booking_time:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [reserved, paid, cancelled]
+
+    # Схемы /payment
+    PaymentRequest:
+      type: object
+      required:
+        - flight_id
+        - user_id
+        - from_station
+        - to_station
+        - seat_number
+        - booking_time
+        - price
+        - shop_id
+        - confirmation_url
+      properties:
+        flight_id:
+          type: number
+        user_id:
+          type: number
+        from_station:
+          type: number
+        to_station:
+          type: number
+        seat_number:
+          type: string
+        booking_time:
+          type: string
+          format: date-time
+        price:
+          type: number
+        shop_id:
+          type: string
+        confirmation_url:
+          type: string
+        description:
+          type: string
+
+    RefundRequest:
+      type: object
+      required:
+        - payment_id
+        - shop_id
+        - price
+      properties:
+        payment_id:
+          type: string
+        shop_id:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+
+    # Схемы /notify
+    TicketNotificationRequest:
+      type: object
+      required:
+        - from_city
+        - from_station_name
+        - to_city
+        - to_station_name
+        - ticket_id
+        - payment_date
+      properties:
+        from_city:
+          type: string
+        from_station_name:
+          type: string
+        to_city:
+          type: string
+        to_station_name:
+          type: string
+        ticket_id:
+          type: number
+        payment_date:
+          type: string
+          format: date-time
+
+    # Схемы /search
+    SearchParams:
+      type: object
+      properties:
+        from:
+          type: string
+        destination:
+          type: string
+        day:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum: [bus, train, plane]
+
+    RouteStationConnection:
+      type: object
+      required:
+        - id
+        - manager_id
+        - title
+        - created_at
+        - stations
+      properties:
+        id:
+          type: number
+        manager_id:
+          type: string
+        title:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Station'
+
+    # Схемы /stations
+    Station:
+      type: object
+      required:
+        - id
+        - city
+        - name
+        - type
+        - number_in_route
+      properties:
+        id:
+          type: number
+        city:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [train, bus, plane]
+        number_in_route:
+          type: number
+
+    AddStation:
+      type: object
+      required:
+        - city
+        - name
+        - type
+        - number_in_route
+      properties:
+        city:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [train, bus, plane]
+        number_in_route:
+          type: number
+
+    PutStation:
+      type: object
+      properties:
+        city:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [train, bus, plane]
+        number_in_route:
+          type: number
+
+    Route:
+      type: object
+      required:
+        - id
+        - manager_id
+        - title
+        - created_at
+      properties:
+        id:
+          type: number
+        manager_id:
+          type: number
+        title:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    AddRoute:
+      type: object
+      required:
+        - manager_id
+        - title
+        - created_at
+      properties:
+        manager_id:
+          type: number
+        title:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    PutRouteProps:
+      type: object
+      properties:
+        manager_id:
+          type: number
+        created_at:
+          type: string
+          format: date-time
+
+    GetRoutesProps:
+      type: object
+      properties:
+        manager_id:
+          type: number
+        title:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    # Схемы для /filghts
+    Flight:
+      type: object
+      required:
+        - id
+        - route_id
+        - origin
+        - destination
+        - departure_time
+        - arrival_time
+        - type
+      properties:
+        id:
+          type: number
+        route_id:
+          type: number
+        origin:
+          type: string
+        destination:
+          type: string
+        departure_time:
+          type: string
+          format: date-time
+        arrival_time:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum: [bus, train, plane]
+
+    AddFlight:
+      type: object
+      required:
+        - route_id
+        - origin
+        - destination
+        - departure_time
+        - arrival_time
+        - type
+      properties:
+        route_id:
+          type: number
+        origin:
+          type: string
+        destination:
+          type: string
+        departure_time:
+          type: string
+          format: date-time
+        arrival_time:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum: [bus, train, plane]
+
+    PutFlight:
+      type: object
+      properties:
+        route_id:
+          type: number
+        origin:
+          type: string
+        destination:
+          type: string
+        departure_time:
+          type: string
+          format: date-time
+        arrival_time:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum: [bus, train, plane]
+
+    GetFlightsProps:
+      type: object
+      properties:
+        route_id:
+          type: number
+        origin:
+          type: string
+        destination:
+          type: string
+        departure_time:
+          type: string
+          format: date-time
+        arrival_time:
+          type: string
+          format: date-time
+        type:
+          type: string
+          enum: [bus, train, plane]
