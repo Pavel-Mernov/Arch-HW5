@@ -25,9 +25,3 @@ paths:
             application/json:
               schema:
                 $ref: '../schemas.yaml#/components/schemas/Error'
-        '401':
-          description: Неавторизован
-          content:
-            application/json:
-              schema:
-                $ref: '../schemas.yaml#/components/schemas/Error'
